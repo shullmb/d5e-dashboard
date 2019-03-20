@@ -33,6 +33,16 @@ class App extends Component {
     })
   }
 
+  handleClick(e) {
+    e.preventDefault()
+    axios.defaults.headers.common['Authorization'] = `Bearer ${this.state.token}`
+    axios.get('/locked/test').then( res => {
+      this.setState({
+        lockedResult: res.data
+      })
+    })
+  }
+
   checkForLocalToken() {
     let token = localStorage.getItem('jwtToken')
     if (!token || token === 'undefined') {
@@ -72,7 +82,7 @@ class App extends Component {
   componentDidMount() {
     this.checkForLocalToken()
   }
-  
+
   render() {
     let user = this.state.user
     let content
