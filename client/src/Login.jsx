@@ -38,7 +38,6 @@ export default class Login extends Component {
                 })
             } else {
                 console.log(res.status, res.data)
-                sessionStorage.setItem('jwtToken', res.data.token)
                 localStorage.setItem('jwtToken', res.data.token)
                 this.props.liftToken(res.data)
                 this.setState({
