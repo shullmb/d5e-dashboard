@@ -40,9 +40,6 @@ export default class Login extends Component {
                 console.log(res.status, res.data)
                 localStorage.setItem('jwtToken', res.data.token)
                 this.props.liftToken(res.data)
-                this.setState({
-                    message: ''
-                })
             }
         }).catch( err => {
             console.log(err)
