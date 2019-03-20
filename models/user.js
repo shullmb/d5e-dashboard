@@ -33,7 +33,7 @@ const userSchema = new Schema({
 
 // helper function to strip secrets from the user instance
 userSchema.set('toObject', {
-    transform: (doc, ret, options) => {
+    transform: function(doc, ret, options) {
         let returnJson = {
             _id: ret._id,
             email: ret.email,
@@ -44,15 +44,20 @@ userSchema.set('toObject', {
 })
 
 // compares passwords
-userSchema.methods.authenticated = (password) => {
+userSchema.methods.authenticated = function(password) {
+    console.log('comparing passwords', password, this.password)
     return bcrypt.compareSync(password, this.password);
 }
 
 // hashes passwords before saving to the database
-userSchema.pre('save', next => {
+userSchema.pre('save', function(next) {
+    console.log('presave', this)
     if (this.isNew) {
+        console.log('this.password', this.password)
         let hash = bcrypt.hashSync(this.password, 12);
+        console.log('hash', hash)
         this.password = hash;
+        console.log('this', this)
     }
     next();
 })
