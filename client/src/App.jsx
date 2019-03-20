@@ -17,6 +17,7 @@ class App extends Component {
     this.liftTokenToState = this.liftTokenToState.bind(this)
     this.checkForLocalToken = this.checkForLocalToken.bind(this)
     this.logout = this.logout.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   liftTokenToState({token, user}) {
@@ -34,16 +35,22 @@ class App extends Component {
   }
 
   handleClick(e) {
+    console.log('App.handleClick')
+    console.log('this.state', this.state)
     e.preventDefault()
     axios.defaults.headers.common['Authorization'] = `Bearer ${this.state.token}`
     axios.get('/locked/test').then( res => {
+      console.log('this is the locked response', res)
       this.setState({
         lockedResult: res.data
       })
+    }).catch(err => {
+      console.log('err')
     })
   }
 
   checkForLocalToken() {
+    console.log('checking for local token')
     let token = localStorage.getItem('jwtToken')
     if (!token || token === 'undefined') {
       // If there is no token, remove the entry in localStorage
@@ -57,7 +64,7 @@ class App extends Component {
       axios.post('/auth/me/from/token')
       .then( res => {
         if (res.data.type === 'error') {
-          console.log('error', res.data)
+          console.log('there was an older token sir, and it didn\'t check out', res.data)
           // if error, remove the bad token and display an error
           localStorage.removeItem('jwtToken')
           this.setState({

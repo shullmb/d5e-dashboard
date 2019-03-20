@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const expressJWT = require('jsonwebtoken');
+const expressJWT = require('express-jwt');
 const RateLimit = require('express-rate-limit');
 
 
@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 app.use('/auth', require('./routes/auth'))
 app.use('/locked', 
     expressJWT({ secret: process.env.JWT_SECRET })
-    .unless({method: 'POST'}, require('./routes')))
+    .unless({method: 'POST'}, require('./routes/locked')))
 
 app.listen(process.env.EXPRESS_PORT, () => {
     console.log(`You're listening to the sweet sounds of ${process.env.EXPRESS_PORT} jwt-authorization in the morning...`)
