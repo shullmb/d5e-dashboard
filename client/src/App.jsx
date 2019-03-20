@@ -11,15 +11,26 @@ class App extends Component {
     this.state = {
       token: '',
       user: null,
-      email: '',
       errorMessage: '',
+      lockedResult: ''
     }
     this.liftTokenToState = this.liftTokenToState.bind(this)
     this.checkForLocalToken = this.checkForLocalToken.bind(this)
+    this.logout = this.logout.bind(this)
   }
 
   liftTokenToState({token, user}) {
     this.setState({token, user})
+  }
+
+  logout() {
+    // Remove the token from localStorage
+    localStorage.removeItem('jwtToken')
+    // Remove the user and token from state
+    this.setState({
+      token: '',
+      user: null
+    })
   }
 
   checkForLocalToken() {
@@ -57,18 +68,38 @@ class App extends Component {
       })
     }
   }
+
   componentDidMount() {
     this.checkForLocalToken()
   }
+  
   render() {
+    let user = this.state.user
+    let content
+    if (user) {
+      content = (
+      <>    
+        <div className="profile-box">  
+          <UserProfile user={ user } logout={ this.logout }/>
+          <p><a onClick={ this.handleClick }>Test the protected route...</a></p>
+          <p>{ this.state.lockedResult }</p>
+      </div>
+      </>
+      )
+    } else {
+      content = (
+        <div className="authenticate">
+          <Signup liftToken={this.liftTokenToState} />
+          <Login liftToken={this.liftTokenToState} />
+        </div>
+      )
+    }
     return (
       <div className="App">
-      <p>I AM THE APP</p>
-      <p>Value of this.state.token: {this.state.token} </p>
-      <Signup liftToken={this.liftTokenToState} />
-      <Login liftToken={this.liftTokenToState} />
+        <header><h1>Welcome to my site!</h1></header>
+        {content}
       </div>
-    );
+    )
   }
 }
 
