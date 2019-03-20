@@ -82,12 +82,7 @@ router.post('/login', (req, res) => {
             }
         }
     })
-
-
-
-
 })
-
 // Route for token validation
 router.post('/me/from/token', ( req, res ) => {
     console.log('POST /me/from/token', req.originalUrl, req.body)
@@ -105,10 +100,10 @@ router.post('/me/from/token', ( req, res ) => {
             } else {
                 // If token is valid...
                 //   Look up the user in the db
-                user.findById(user._id, (err, user) => {
+                User.findById(user._id, (err, user) => {
                     //   If user doesn't exist, return an error
                     if (err) {
-                        res.json({ type: 'error', message: 'Database error during validation' })
+                        res.json( { type: 'error', message: 'Database error during validation' } )
                     } else {
                         //   If user exists, send user and token back to React
                         res.json({ type: 'success', message: 'Valid token', user: user.toObject})
