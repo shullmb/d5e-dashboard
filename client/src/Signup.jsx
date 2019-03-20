@@ -43,7 +43,6 @@ export default class Signup extends Component {
             if (res.data.type === 'error') {
                 console.log('error', res.data)
             } else {
-                sessionStorage.setItem('jwtToken', res.data.token)
                 localStorage.setItem('jwtToken', res.data.token)
                 this.props.liftToken(res.data)
 
