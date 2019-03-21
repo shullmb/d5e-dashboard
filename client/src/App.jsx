@@ -57,7 +57,7 @@ class App extends Component {
   }
 
   checkForLocalToken() {
-    console.log('[App.jsx]: checkForLocalToken(), localStorage', { localStorage: window.localStorage } )
+    console.log('[App.jsx]: checkForLocalToken(), localStorage["jwtToken"]', localStorage["jwtToken"])
     let token = localStorage.getItem('jwtToken')
     if (!token || token === 'undefined') {
       // If there is no token, remove the entry in localStorage
@@ -94,6 +94,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    console.log('[App.jsx]: componentDidMount(), this.state', JSON.stringify(this.state) )
     this.checkForLocalToken()
   }
 

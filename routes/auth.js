@@ -41,8 +41,8 @@ router.post('/signup', (req, res, next) => {
                         expiresIn: 60 * 30
                     })
                     // return the token
-                    console.log('here is the reply', JSON.stringify({newUser: newUser.toObject, token}))
-                    res.status(201).json({type: 'success', message: `Account creation successful. Welcome ${newUser.name}!`, user: newUser.toObject, token})
+                    console.log('here is the reply', JSON.stringify({newUser: newUser.toObject(), token}))
+                    res.status(201).json({type: 'success', message: `Account creation successful. Welcome ${newUser.name}!`, user: newUser.toObject(), token})
                 }
             })
         }
@@ -112,3 +112,5 @@ router.post('/me/from/token', ( req, res ) => {
 // Route for logout
 
 module.exports = router;
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YzkzMDZmM2EwODUxZTM2MjlmYWY0ZmUiLCJlbWFpbCI6ImFzZGZAYWRzLmFzZGFzZGFzZGZmZiIsIm5hbWUiOiJxIiwiaWF0IjoxNTUzMTM5NDQzLCJleHAiOjE1NTMxNDEyNDN9.UcQfMx2ip-LCSxD6mTRm7DwlcvfMRNn9jSh4R6QUh3g
