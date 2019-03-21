@@ -49,6 +49,9 @@ export default class Signup extends Component {
             }
         }).catch(err => {
             console.log(err)
+            this.setState({
+                message: "Maximum sign ups reached"
+            })
         })
     }
     render() {

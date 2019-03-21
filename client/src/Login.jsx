@@ -43,6 +43,9 @@ export default class Login extends Component {
             }
         }).catch( err => {
             console.log(err)
+            this.setState({
+                message: "Maximum login attempts exceeded. Please try again later"
+            })
         })
     }
     render() {
