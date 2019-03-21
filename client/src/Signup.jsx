@@ -77,14 +77,9 @@ export default class Signup extends Component {
     }
     render() {
         console.log('rendering signup')
-        let flash;
-        if (this.state.message) {
-            let flash = <p className="flash-message">flash message: {this.state.message}</p>
-        }
         return (
             <div className="signup">
                 <h3>Create a new account: </h3>
-                { flash }
                 <form onSubmit={this.handleSubmit} >
                     <input onChange={this.handleNameChange} value={this.state.name} type="text" name="name" placeholder="Enter your full name"/>
                     <input onChange={this.handleEmailChange} value={this.state.email} type="email" name="email" placeholder="Enter your email address"/>
