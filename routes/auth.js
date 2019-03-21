@@ -8,38 +8,32 @@ router.post('/signup', (req, res, next) => {
     console.log('POST /signup', req.body)
     // see if the email is already in the db
     User.findOne({email: req.body.email}, (err, user) => {
+        console.log('POST /signup, {err, user}', {err, user} )
         // if db error, catch it 
-        console.log('signup err', err)
-        if (err) res.json({type: 'error', message: err.message})
+        if (err) {
+            console.log('signup err', err)
+            res.status(500).json({type: 'error', message: err.message})
+        }
         // if email exists, return an error
-        if (user) {
-            res.status(400).json({type: 'error', message: 'Email already exists'});
+         if (user) {
+            console.log('User exists', req.body.email)
+            // return a 404 to 
+            res.status(400).json({type: 'error', message: 'A user with that email address already exists'});
         } else {
             // if no, create the user in the db
-            // User.create({
-            //     name: req.body.name,
-            //     email: req.body.email,
-            //     password: req.body.password
-            // }, (newUser, err) => {
-            //     console.log('response from User.create', newUser, err)
-            //     if (!err) {
-            //         res.status(500).json({type: 'error', message: 'Database error creating user'})
-            //     } else {
-            //         res.json({type: 'success', message: `Successful signup for user ${user.name}`, user: newUser.toObject, token})
-            //     }
-            // })
             
             let user = new User({
                 name: req.body.name,
                 email: req.body.email,
                 password: req.body.password
             })
-            user.password = req.body.password
             console.log('user instance', user)
             user.save((err, newUser) => {
+                console.log('done saving, here are the results', {err, newUser})
                 if (err) {
                     console.log('save err', err)
-                    res.json({type: 'error', message: 'Database error creating user'})
+                    // this error message is deliberately vague. The front end should supply more robust feedback
+                    res.status(404).json({type: 'error', message: 'There was an error creating the user'})
                 } else {
                     console.log('created user', newUser)
                     // sign a token (this is the login step)
@@ -47,7 +41,8 @@ router.post('/signup', (req, res, next) => {
                         expiresIn: 60 * 30
                     })
                     // return the token
-                    res.status(200).json({type: 'success', user: newUser.toObject, token})
+                    console.log('here is the reply', JSON.stringify({newUser: newUser.toObject, token}))
+                    res.status(201).json({type: 'success', message: `Account creation successful. Welcome ${newUser.name}!`, user: newUser.toObject, token})
                 }
             })
         }
