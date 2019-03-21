@@ -13,14 +13,14 @@ const loginLimiter = new RateLimit({
     windowMs: 5 * 60 * 1000, // 5 minutes
     max: 3, 
     delayMs: 0, // disabled
-    message: "Maximum login attempts exceeded! Kindly F off if you are a hacker" 
+    message: JSON.stringify({type: 'error', message: "Maximum login attempts exceeded!" })
 })
 
 const signupLimiter = new RateLimit({
     windowMs: 60 * 60 * 1000,
     max: 3,
     delayMs: 0, // disabled
-    message: "Maximum accounts created. Please try again later"
+    message: JSON.stringify({type: 'error', message: 'Account creation maximum exceeded!' })
 })
 
 mongoose.connect('mongodb://localhost/jwt', {useNewUrlParser: true});
