@@ -11,20 +11,27 @@ class App extends Component {
     this.state = {
       token: '',
       user: null,
-      errorMessage: '',
+      message: '',
       lockedResult: ''
     }
     this.liftTokenToState = this.liftTokenToState.bind(this)
+    this.liftMessageToState = this.liftMessageToState.bind(this)
     this.checkForLocalToken = this.checkForLocalToken.bind(this)
     this.logout = this.logout.bind(this)
     this.handleClick = this.handleClick.bind(this)
   }
 
-  liftTokenToState({token, user}) {
-    this.setState({token, user})
+  liftTokenToState({token, user, message}) {
+    console.log('[App.jsx]: lifting token to state', {token, user, message})
+    this.setState({token, user, message})
+  }
+  liftMessageToState({ message }) {
+    console.log('[App.jsx]: lifting error to state', { message })
+    this.setState({ message })
   }
 
   logout() {
+    console.log('[App.jsx] logout(): logging out', {localStorage: localStorage})
     // Remove the token from localStorage
     localStorage.removeItem('jwtToken')
     // Remove the user and token from state
@@ -35,8 +42,8 @@ class App extends Component {
   }
 
   handleClick(e) {
-    console.log('App.handleClick')
-    console.log('this.state', this.state)
+    console.log('[App.jsx]: handleClick(), event', {e})
+    console.log('[App.jsx]: handleClick(), this.state', this.state)
     e.preventDefault()
     axios.defaults.headers.common['Authorization'] = `Bearer ${this.state.token}`
     axios.get('/locked/test').then( res => {
@@ -50,7 +57,7 @@ class App extends Component {
   }
 
   checkForLocalToken() {
-    console.log('checking for local token')
+    console.log('[App.jsx]: checkForLocalToken(), localStorage', { localStorage: window.localStorage } )
     let token = localStorage.getItem('jwtToken')
     if (!token || token === 'undefined') {
       // If there is no token, remove the entry in localStorage
@@ -106,14 +113,15 @@ class App extends Component {
     } else {
       content = (
         <div className="authenticate">
-          <Signup liftToken={this.liftTokenToState} />
-          <Login liftToken={this.liftTokenToState} />
+          <Signup liftToken={this.liftTokenToState} liftMessage={this.liftMessageToState} />
+          <Login liftToken={this.liftTokenToState} liftMessage={this.liftMessageToState} />
         </div>
       )
     }
     return (
       <div className="App">
         <header><h1>Welcome to my site!</h1></header>
+        <h3>{ this.state.message }</h3>
         {content}
       </div>
     )

@@ -42,11 +42,24 @@ export default class Login extends Component {
                 this.props.liftToken(res.data)
             }
         }).catch( err => {
-            console.log(err)
-            this.setState({
-                message: "Maximum login attempts exceeded. Please try again later"
-            })
-        })
+            console.log('catching error')
+            let message;
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                message = `${err.response.status}: ${err.response.data.message || err}`
+            } else if (err.request) {
+                // The request was made but no response was received
+                console.log(err.request)
+                message = '404: server not found'
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', err.message);
+                message = 'Error' + err.message
+            }
+            this.setState({ message })
+            this.props.liftMessage({ message })
+        });
     }
     render() {
         return(

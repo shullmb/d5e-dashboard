@@ -8,6 +8,7 @@ export default class Signup extends Component {
             name: '',
             email: '',
             password: '',
+            message: ''
         }
 
         this.handleNameChange = this.handleNameChange.bind(this)
@@ -42,22 +43,48 @@ export default class Signup extends Component {
             console.log('res.data', res.data)
             if (res.data.type === 'error') {
                 console.log('error', res.data)
+                this.setState({
+                    message: res.data.message
+                })
             } else {
+                console.log('res.data', res.data)
                 localStorage.setItem('jwtToken', res.data.token)
                 this.props.liftToken(res.data)
 
             }
         }).catch(err => {
+            console.log(err, err.response, err.status)
+            console.log('catching error')
+            let message;
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                message = `${err.response.status}: ${err.response.data.message || err}`
+            } else if (err.request) {
+                // The request was made but no response was received
+                console.log(err.request)
+                message = '404: server not found'
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', err.message);
+                message = 'Error' + err.message
+            }
             console.log(err)
-            this.setState({
-                message: "Maximum sign ups reached"
-            })
-        })
+            if (err.status === '429') message = `${err.response.status}: too many requests`
+            // this.setState({ message })
+            this.props.liftMessage({ message })
+        });
     }
     render() {
+        console.log('rendering signup')
+        let flash;
+        if (this.state.message) {
+            let flash = <p className="flash-message">flash message: {this.state.message}</p>
+        }
         return (
             <div className="signup">
                 <h3>Create a new account: </h3>
+                { flash }
                 <form onSubmit={this.handleSubmit} >
                     <input onChange={this.handleNameChange} value={this.state.name} type="text" name="name" placeholder="Enter your full name"/>
                     <input onChange={this.handleEmailChange} value={this.state.email} type="email" name="email" placeholder="Enter your email address"/>
