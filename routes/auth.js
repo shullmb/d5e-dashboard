@@ -101,7 +101,7 @@ router.post('/me/from/token', ( req, res ) => {
                         res.json( { type: 'error', message: 'Database error during validation' } )
                     } else {
                         //   If user exists, send user and token back to React
-                        res.json({ type: 'success', message: 'Valid token', user: user.toObject})
+                        res.json({ type: 'success', message: 'Valid token', user: user.toObject(), token})
                     }
                 })
             }
@@ -112,5 +112,3 @@ router.post('/me/from/token', ( req, res ) => {
 // Route for logout
 
 module.exports = router;
-
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YzkzMDZmM2EwODUxZTM2MjlmYWY0ZmUiLCJlbWFpbCI6ImFzZGZAYWRzLmFzZGFzZGFzZGZmZiIsIm5hbWUiOiJxIiwiaWF0IjoxNTUzMTM5NDQzLCJleHAiOjE1NTMxNDEyNDN9.UcQfMx2ip-LCSxD6mTRm7DwlcvfMRNn9jSh4R6QUh3g
