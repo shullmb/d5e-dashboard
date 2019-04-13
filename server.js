@@ -38,7 +38,7 @@ app.use('/auth/signup', signupLimiter);
 app.use('/auth', require('./routes/auth'))
 app.use('/locked', 
     expressJWT({ secret: process.env.JWT_SECRET })
-    .unless({method: 'POST'}, require('./routes/locked')))
+    .unless({method: 'POST'}), require('./routes/locked'))
 
 app.listen(process.env.EXPRESS_PORT, () => {
     console.log(`You're listening to the sweet sounds of ${process.env.EXPRESS_PORT} jwt-authorization in the morning...`)

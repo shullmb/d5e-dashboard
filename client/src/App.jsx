@@ -49,7 +49,7 @@ class App extends Component {
     axios.get('/locked/test').then( res => {
       console.log('this is the locked response', res)
       this.setState({
-        lockedResult: res.data
+        lockedResult: res.data.message
       })
     }).catch(err => {
       console.log('err')
@@ -68,7 +68,7 @@ class App extends Component {
       })
     } else {
       // If found, send token to be verified
-      axios.post('/auth/me/from/token')
+      axios.post('/auth/me/from/token',{token})
       .then( res => {
         if (res.data.type === 'error') {
           console.log('there was an older token sir, and it didn\'t check out', res.data)
