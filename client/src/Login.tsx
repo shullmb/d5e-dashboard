@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {IAuthProps,IAuthState} from './react-app-env';
 
-export default class Login extends Component<any,any> {
-    constructor(props) {
+export default class Login extends Component<IAuthProps,IAuthState> {
+    constructor(props: IAuthProps) {
         super(props)
         this.state = {
             email: '',
@@ -14,20 +15,20 @@ export default class Login extends Component<any,any> {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    handleEmailChange(e) {
+    handleEmailChange(e:any) {
         this.setState({
             email: e.target.value
         })
     }
-    handlePasswordChange(e) {
+    handlePasswordChange(e:any) {
         this.setState({
             password: e.target.value
         })
     }
-    handleSubmit(e) {
+    handleSubmit(e:any) { 
         console.log('Logging in...')
         e.preventDefault()
-        axios.post('/auth/login', {
+        axios.post('/auth/login', { 
             email: this.state.email,
             password: this.state.password
         }).then( res => {
@@ -59,7 +60,6 @@ export default class Login extends Component<any,any> {
                 message = 'Error' + err.message
             }
             this.setState({ message })
-            this.props.liftMessage({ message })
         });
     }
     render() {

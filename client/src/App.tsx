@@ -4,20 +4,11 @@ import Signup from './Signup';
 import Login from './Login';
 import UserProfile from './UserProfile';
 import axios from 'axios';
-
-interface IAppState {
-  token: any;
-  user: any;
-  message: any;
-  lockedResult: any;
-}
-interface IAppProps extends IAppState {
-  liftToken: ({ token, user, message }: { token: any; user: any; message: any; }) => void;
-}
+import {IAppProps, IAppState} from './react-app-env';
 
 
-class App extends Component<any,any> {
-  constructor(props) {
+class App extends Component<IAppProps,IAppState> {
+  constructor(props: IAppProps) {
     super(props)
     this.state = {
       token: '',
@@ -31,8 +22,7 @@ class App extends Component<any,any> {
     this.handleClick = this.handleClick.bind(this)
   }
 
-  liftTokenToState({token, user, message}) {
-    console.log('[App.jsx]: lifting token to state', {token, user, message})
+  liftTokenToState({token, user, message} : IAppState) {
     this.setState({token, user, message})
   }
 
@@ -47,7 +37,7 @@ class App extends Component<any,any> {
     })
   }
 
-  handleClick(e) {
+  handleClick(e: any) {
     console.log('[App.jsx]: handleClick(), event', {e})
     console.log('[App.jsx]: handleClick(), this.state', this.state)
     e.preventDefault()

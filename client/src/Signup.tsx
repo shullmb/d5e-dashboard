@@ -1,19 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {IAuthProps, IAuthState} from './react-app-env';
 
-interface ISignUpState {
-    name: string;
-    email: string;
-    password: string;
-    message: string;
-}
-
-interface ISignUpProps {
-    liftToken: ({ token, user, message }: { token: any; user: any; message: any; }) => void;
-}
-
-export default class Signup extends Component<ISignUpProps,ISignUpState> {
-    constructor(props) {
+export default class Signup extends Component<IAuthProps,IAuthState> {
+    constructor(props: IAuthProps) {
         super(props)
         this.state = {
             name: '',
@@ -21,29 +11,33 @@ export default class Signup extends Component<ISignUpProps,ISignUpState> {
             password: '',
             message: ''
         }
-
-        this.handleNameChange = this.handleNameChange.bind(this)
-        this.handleEmailChange = this.handleEmailChange.bind(this)
-        this.handlePasswordChange = this.handlePasswordChange.bind(this)
+        this.handleInputChange = this.handleInputChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    handleNameChange(e) {
-        this.setState({
-            name: e.target.value
-        })
+    // handleNameChange(e) {
+    //     this.setState({
+    //         name: e.target.value
+    //     })
+    // }
+    // handleEmailChange(e) {
+    //     this.setState({
+    //         email: e.target.value
+    //     })
+    // }
+    // handlePasswordChange(e) {
+    //     this.setState({
+    //         password: e.target.value
+    //     })
+    // }
+
+    handleInputChange(e: any) {
+        this.setState({ 
+            [e.target.name]: e.target.value 
+        });
     }
-    handleEmailChange(e) {
-        this.setState({
-            email: e.target.value
-        })
-    }
-    handlePasswordChange(e) {
-        this.setState({
-            password: e.target.value
-        })
-    }
-    handleSubmit(e) {
+
+    handleSubmit(e: any) {
         console.log('signing up...')
         e.preventDefault()
         axios.post('/auth/signup', {
@@ -72,9 +66,9 @@ export default class Signup extends Component<ISignUpProps,ISignUpState> {
             <div className="signup">
                 <h3>Create a new account: </h3>
                 <form onSubmit={this.handleSubmit} >
-                    <input onChange={this.handleNameChange} value={this.state.name} type="text" name="name" placeholder="Enter your full name"/>
-                    <input onChange={this.handleEmailChange} value={this.state.email} type="email" name="email" placeholder="Enter your email address"/>
-                    <input onChange={this.handlePasswordChange} value={this.state.password} type="password" name="password" placeholder="Choose a password..."/>
+                    <input onChange={this.handleInputChange} value={this.state.name} type="text" name="name" placeholder="Enter your full name"/>
+                    <input onChange={this.handleInputChange} value={this.state.email} type="email" name="email" placeholder="Enter your email address"/>
+                    <input onChange={this.handleInputChange} value={this.state.password} type="password" name="password" placeholder="Choose a password..."/>
                     <input type="submit" value="Sign Up!"/>
                 </form>
             </div>
