@@ -5,7 +5,18 @@ import Login from './Login';
 import UserProfile from './UserProfile';
 import axios from 'axios';
 
-class App extends Component {
+interface IAppProps {
+
+}
+
+interface IAppState {
+  token: any;
+  user: any;
+  message: any;
+  lockedResult: any;
+}
+
+class App extends Component<any,any> {
   constructor(props) {
     super(props)
     this.state = {
@@ -15,7 +26,6 @@ class App extends Component {
       lockedResult: ''
     }
     this.liftTokenToState = this.liftTokenToState.bind(this)
-    this.liftMessageToState = this.liftMessageToState.bind(this)
     this.checkForLocalToken = this.checkForLocalToken.bind(this)
     this.logout = this.logout.bind(this)
     this.handleClick = this.handleClick.bind(this)
@@ -24,10 +34,6 @@ class App extends Component {
   liftTokenToState({token, user, message}) {
     console.log('[App.jsx]: lifting token to state', {token, user, message})
     this.setState({token, user, message})
-  }
-  liftMessageToState({ message }) {
-    console.log('[App.jsx]: lifting error to state', { message })
-    this.setState({ message })
   }
 
   logout() {
@@ -75,7 +81,7 @@ class App extends Component {
           // if error, remove the bad token and display an error
           localStorage.removeItem('jwtToken')
           this.setState({
-            errorMessage: res.data.message
+            message: res.data.message
           })
         } else {
           // Upon receipt, store token 
@@ -114,8 +120,8 @@ class App extends Component {
     } else {
       content = (
         <div className="authenticate">
-          <Signup liftToken={this.liftTokenToState} liftMessage={this.liftMessageToState} />
-          <Login liftToken={this.liftTokenToState} liftMessage={this.liftMessageToState} />
+          <Signup liftToken={this.liftTokenToState}  />
+          <Login liftToken={this.liftTokenToState}  />
         </div>
       )
     }
