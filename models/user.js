@@ -13,7 +13,7 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: [true, 'You must enter a password'],
-        minlength: [10, 'Your password must be between 10 and 128 characters'],
+        minlength: [8, 'Your password must be between 10 and 128 characters'],
         maxlength: [128, 'Your password must be between 10 and 128 characters']
     },
     email: {
