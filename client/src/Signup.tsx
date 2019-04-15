@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { any } from 'prop-types';
 
-export default class Signup extends Component<any,any> {
+interface ISignUpState {
+    name: string;
+    email: string;
+    password: string;
+    message: string;
+}
+
+interface ISignUpProps {
+    liftToken: ({ token, user, message }: { token: any; user: any; message: any; }) => void;
+}
+
+export default class Signup extends Component<ISignUpProps,ISignUpState> {
     constructor(props) {
         super(props)
         this.state = {
@@ -48,33 +58,12 @@ export default class Signup extends Component<any,any> {
                     message: res.data.message
                 })
             } else {
-                console.log('res.data', res.data)
-                console.log('token', res.data.token)
                 localStorage.setItem('jwtToken', res.data.token)
                 this.props.liftToken(res.data)
 
             }
         }).catch(err => {
-            console.log(err, err.response, err.status)
-            console.log('catching error')
-            let message;
-            if (err.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                message = `${err.response.status}: ${err.response.data.message || err}`
-            } else if (err.request) {
-                // The request was made but no response was received
-                console.log(err.request)
-                message = '404: server not found'
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', err.message);
-                message = 'Error' + err.message
-            }
             console.log(err)
-            if (err.status === '429') message = `${err.response.status}: too many requests`
-            // this.setState({ message })
-            this.props.liftMessage({ message })
         });
     }
     render() {

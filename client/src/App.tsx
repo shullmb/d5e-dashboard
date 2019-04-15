@@ -5,16 +5,16 @@ import Login from './Login';
 import UserProfile from './UserProfile';
 import axios from 'axios';
 
-interface IAppProps {
-
-}
-
 interface IAppState {
   token: any;
   user: any;
   message: any;
   lockedResult: any;
 }
+interface IAppProps extends IAppState {
+  liftToken: ({ token, user, message }: { token: any; user: any; message: any; }) => void;
+}
+
 
 class App extends Component<any,any> {
   constructor(props) {
