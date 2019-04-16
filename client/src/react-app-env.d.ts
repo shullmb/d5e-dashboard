@@ -1,14 +1,19 @@
 /// <reference types="react-scripts" />
 
+export interface IUser {
+  _id: string;
+  name: string;
+  email: string;
+}
+
 export interface IAppState {
-  token?: any;
-  user?: any;
-  message?: any;
-  lockedResult?: any;
+  token?: string;
+  user?: IUser | null;
+  message?: string;
+  lockedResult?: string;
 }
 export interface IAppProps {
-  user?: any;
-  logout?:() => void;
+  user?: IUser;
 }
 
 export interface IAuthState {
@@ -19,10 +24,10 @@ export interface IAuthState {
 }
 
 export interface IAuthProps {
-  liftToken: ({ token, user, message }: { token: any; user: any; message: any; }) => void;
+  liftToken: ({ token, user, message }: { token: string; user: IUser; message: string; }) => void;
 }
 
 export interface IProfileProps {
-  user: any;
+  user: IUser;
   logout?: () => void
 }
