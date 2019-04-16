@@ -23,8 +23,13 @@ export interface IAuthState {
   message?: string;
 }
 
+export interface ILiftToken { 
+  token: string; 
+  user: IUser; 
+  message: string; }
+
 export interface IAuthProps {
-  liftToken: ({ token, user, message }: { token: string; user: IUser; message: string; }) => void;
+  liftToken: ({ token, user, message }): ILiftToken => void;
 }
 
 export interface IProfileProps {
