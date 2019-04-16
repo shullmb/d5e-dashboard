@@ -29,7 +29,7 @@ export interface ILiftToken {
   message: string; }
 
 export interface IAuthProps {
-  liftToken: ({ token, user, message }): ILiftToken => void;
+  liftToken: (ILiftToken) => void;
 }
 
 export interface IProfileProps {
