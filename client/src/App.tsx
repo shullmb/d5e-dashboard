@@ -6,7 +6,6 @@ import UserProfile from './UserProfile';
 import axios from 'axios';
 import {IAppProps, IAppState} from './react-app-env';
 
-
 class App extends Component<IAppProps,IAppState> {
   constructor(props: IAppProps) {
     super(props)
@@ -27,7 +26,6 @@ class App extends Component<IAppProps,IAppState> {
   }
 
   logout() {
-    console.log('[App.jsx] logout(): logging out', {localStorage: localStorage})
     // Remove the token from localStorage
     localStorage.removeItem('jwtToken')
     // Remove the user and token from state
@@ -37,9 +35,7 @@ class App extends Component<IAppProps,IAppState> {
     })
   }
 
-  handleClick(e: any) {
-    console.log('[App.jsx]: handleClick(), event', {e})
-    console.log('[App.jsx]: handleClick(), this.state', this.state)
+  handleClick(e: React.MouseEvent) {
     e.preventDefault()
     axios.defaults.headers.common['Authorization'] = `Bearer ${this.state.token}`
     axios.get('/locked/test').then( res => {
@@ -53,36 +49,28 @@ class App extends Component<IAppProps,IAppState> {
   }
 
   checkForLocalToken() {
-    console.log('[App.jsx]: checkForLocalToken(), localStorage["jwtToken"]', localStorage["jwtToken"])
     let token = localStorage.getItem('jwtToken')
     if (!token || token === 'undefined') {
-      // If there is no token, remove the entry in localStorage
       localStorage.removeItem('jwtToken')
       this.setState({
         token: '',
         user: null
       })
     } else {
-      // If found, send token to be verified
       axios.post('/auth/me/from/token',{token})
       .then( res => {
         if (res.data.type === 'error') {
-          console.log('there was an older token sir, and it didn\'t check out', res.data)
-          // if error, remove the bad token and display an error
           localStorage.removeItem('jwtToken')
           this.setState({
             message: res.data.message
           })
         } else {
-          // Upon receipt, store token 
           localStorage.setItem('jwtToken', res.data.token)
-          // Put token in state
           this.setState({
             token: res.data.token,
             user: res.data.user
           })
         }
-        console.log(res)
       }).catch( err => {
         console.log(err)
       })
@@ -90,7 +78,6 @@ class App extends Component<IAppProps,IAppState> {
   }
 
   componentDidMount() {
-    console.log('[App.jsx]: componentDidMount(), this.state', JSON.stringify(this.state) )
     this.checkForLocalToken()
   }
 

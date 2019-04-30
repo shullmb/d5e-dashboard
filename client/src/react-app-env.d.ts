@@ -12,6 +12,7 @@ export interface IAppState {
   message?: string;
   lockedResult?: string;
 }
+
 export interface IAppProps {
   user?: IUser;
 }

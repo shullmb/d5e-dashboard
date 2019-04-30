@@ -15,22 +15,6 @@ export default class Signup extends Component<IAuthProps,IAuthState> {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    // handleNameChange(e) {
-    //     this.setState({
-    //         name: e.target.value
-    //     })
-    // }
-    // handleEmailChange(e) {
-    //     this.setState({
-    //         email: e.target.value
-    //     })
-    // }
-    // handlePasswordChange(e) {
-    //     this.setState({
-    //         password: e.target.value
-    //     })
-    // }
-
     handleInputChange(e: any) {
         this.setState({ 
             [e.target.name]: e.target.value 

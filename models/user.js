@@ -45,7 +45,6 @@ userSchema.set('toObject', {
 
 // compares passwords
 userSchema.methods.authenticated = function(password) {
-    console.log('comparing passwords', password, this.password)
     return bcrypt.compareSync(password, this.password);
 }
 
